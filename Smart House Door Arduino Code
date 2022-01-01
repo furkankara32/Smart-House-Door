@@ -1,0 +1,62 @@
+// Furkan Kara
+// Eskisehir Osmangazi University Electrical-Electronics Engineering Department
+// Smart House Door Project
+// hypemassive32@gmail.com
+
+  
+  
+
+#include <SoftwareSerial.h>  // The necessary libraries have been added.
+#include <Servo.h>
+
+Servo servomotor;  // The motor used was identified.
+int txnumber=10;   // HC06 Bluetooth Module has been connected.
+int rxnumber=11;  // HC06 Bluetooth Module has been connected.
+int redled=2;     // LED's have been connected.
+int redledtwo=4;
+int greenled=3;
+int greenledtwo=5;
+
+SoftwareSerial bluetoothangleofrotation(txnumber,rxnumber);//Receive data from Bluetooth.
+
+void setup() {
+  
+  servomotor.attach(9);//Servo Motor has been connected.
+  bluetoothangleofrotation.begin(9600);
+  servomotor.write(0);
+  pinMode(redled,OUTPUT);
+  pinMode(redledtwo,OUTPUT);
+  pinMode(greenled,OUTPUT);
+  pinMode(greenledtwo,OUTPUT);
+  
+  
+  
+  
+}
+
+void loop()  {
+  if(bluetoothangleofrotation.available()>0) //If there is a connection,loop starts.
+  {
+   
+    int servonumberofrotation=bluetoothangleofrotation.read(); //The data from Bluetooth is read, the servo motor rotates with the data read.
+    
+
+    servomotor.write(servonumberofrotation);
+
+   if((servonumberofrotation)!=90){
+    digitalWrite(redled,LOW); // Red LED's turn off.
+    digitalWrite(redledtwo,LOW);
+    digitalWrite(greenled,HIGH); //Green LED's turn on.
+    digitalWrite(greenledtwo,HIGH);
+   }
+   else{
+    digitalWrite(redled,HIGH); //Red LED's turn on.
+    digitalWrite(redledtwo,HIGH);
+    digitalWrite(greenled,LOW); //Green LED's turn off.
+    digitalWrite(greenledtwo,LOW);
+   }
+    
+  }
+  
+  
+}
